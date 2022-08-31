@@ -42,7 +42,7 @@ class Camera:
         arr_coordenada = np.array([[self.coordenada.x], [self.coordenada.y], [self.coordenada.z]])
         self.arregloDerecho = np.matmul(self.matrizDeCambio, arr_coordenada)
         
-        self.viewMatrix[0:3,0:3] = self.matrizDeCambio
+        self.viewMatrix[0:3,0:3] = self.matrizDeCambio.T
         self.viewMatrix[0:3,3] = -self.arregloDerecho[:,0]
         self.viewMatrix[3,:] = [0,0,0,1]
         print("---.---.---.---")
