@@ -2,10 +2,18 @@ from Coordinates import Vector3
 import numpy as np
 
 class Camera:
-    def __init__(self, W, U, V, coordenada):
+    def __init__(self, W, U, V, coordenada, height, width, l, f, c):
         self.W = W
         self.U = U
         self.V = V
+
+        self.height = height
+        self.width  = width
+
+        self.f = f  #Distacia plano imagen
+        self.l = l
+        self.c = c
+
         self.coordenada = coordenada
         self.matrizDeCambio = np.array([[0,0,0],
                                         [0,0,0],
@@ -48,3 +56,12 @@ class Camera:
         print("---.---.---.---")
         print("View Matrix")
         print(self.viewMatrix)
+
+    def get_coordenadas_respecto_camara(self, punto_original):
+        punto_multiplicable = np.array([[punto_original.x], [punto_original.y], [punto_original.z], [1]])
+        print("")
+        punto_respecto_camara = np.matmul(self.viewMatrix, punto_multiplicable)
+        print(punto_respecto_camara)
+
+        
+        return 1

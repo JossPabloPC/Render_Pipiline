@@ -8,9 +8,10 @@ from Coordinates import *
 from Camera import Camera
 
 #Constantes
-Up      =  Vector3(0, 1, 0)
-Right   =  Vector3(1, 0, 0)
-Forward =  Vector3(0, 0, 1)
+Up          =  Vector3(0, 1, 0)
+Right       =  Vector3(1, 0, 0)
+Forward     =  Vector3(0, 0, 1)
+Backward    =  Vector3(0, 0, -1)
 
 #Functions
 def array2Window(arr):
@@ -31,18 +32,22 @@ def printVector(entryX, entryY, entryZ):
       label = tk.Label(text= "X: " + str(vectorA.x) + " Y: " + str(vectorA.y) + " Z: " + str(vectorA.z) + " Magnitud: " + str(vectorA.magnitud) )
       label.pack()
 
-def _3D_2_2D(camera, point):
-      camera.obtener_W(point)
-      camera.W.normalizar_vector()
-      camera.U = Vector3.producto_cruz(camera.V, camera.W)
-      print("U == X: " + str(camera.U.x) + " Y: " + str(camera.U.y) + " Z: " + str(camera.U.z) + " Magnitud: " + str(camera.U.magnitud) )
-      camera.setMatrizcambio()
-      camera.setViewMatrix()
+def _3D_2_2D(camaraPos, pointPos):
+      W = Backward
+      U = Right
+      V = Up
+
+      camara = Camera(W, U, V, camaraPos)
+
+      camara.setMatrizcambio()
+      camara.setViewMatrix()
+
+      punto_camara = camara.get_coordenadas_respecto_camara(pointPos)
 
 
 # Create an instance of TKinter Window or frame
 win= tk.Tk()
-win.geometry("1080x720")# Create a Label to capture the Video frames
+win.geometry("850x480")# Create a Label to capture the Video frames
 
 # Output image
 cap= np.zeros((300,300,3), dtype=np.uint8)
@@ -71,17 +76,11 @@ Point_X_entry.insert(0,"0")
 Point_Y_entry.insert(0,"2")
 Point_Z_entry.insert(0,"0")
 
-#Objeto camara
-W = Vector3(0,0,0)
-U = Vector3(0,0,0)
-V = Up
-coordenada = Vector3(int(Camera_X_entry.get()), int(Camera_Y_entry.get()), int(Camera_Z_entry.get()))
-point = Vector3(float(Point_X_entry.get()), float(Point_Y_entry.get()), float(Point_Z_entry.get()))
-camara = Camera(W, U, V, coordenada)
 
 #Punto
-run_btn     = tk.Button(command=lambda: _3D_2_2D(camara, point) , text= "Run")
-
+run_btn     = tk.Button(command=lambda: _3D_2_2D(Vector3(int(Camera_X_entry.get()), int(Camera_Y_entry.get()), int(Camera_Z_entry.get())),
+                                                Vector3(float(Point_X_entry.get()), float(Point_Y_entry.get()), float(Point_Z_entry.get()))
+                                                ) , text= "Run")
 #Packing
 greeting.pack()
 cameraLbl.pack()
