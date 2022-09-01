@@ -7,12 +7,12 @@ class Camera:
         self.U = U
         self.V = V
 
-        self.height = height
-        self.width  = width
+        self.height = height    #alto plano imagen 
+        self.width  = width     #ancho plano imagen
 
-        self.f = f  #Distacia plano imagen
-        self.l = l
-        self.c = c
+        self.f = f              #Distacia plano imagen
+        self.l = l              #Distancia plano lejano
+        self.c = c              #Distancia plano cercano
 
         self.coordenada = coordenada
         self.matrizDeCambio = np.array([[0,0,0],
@@ -23,6 +23,11 @@ class Camera:
                                      [0,0,0,0],
                                      [0,0,0,0],
                                      [0,0,0,0]], dtype=np.float)
+
+        self.matiz_Tp = np.array([[self.f/self.w, 0,0,0]
+                                  [0, self.f/self.h,0,0]
+                                  [0, 0, -(self.l+self.c)/(self.l-self.c), (2*self.l*self.c)/(self.l-self.c)]
+                                  [0,0,1,0]])
 
     def obtener_W(self, punto):
         self.W = Vector3.restar_vector(self.coordenada, punto)
@@ -63,5 +68,6 @@ class Camera:
         punto_respecto_camara = np.matmul(self.viewMatrix, punto_multiplicable)
         print(punto_respecto_camara)
 
-        
-        return 1
+        return punto_respecto_camara
+    
+    def
