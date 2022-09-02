@@ -1,5 +1,6 @@
 from Coordinates import Vector3
 import numpy as np
+import math
 
 class Camera:
     def __init__(self, W, U, V, coordenada, height, width, l, f, c):
@@ -9,7 +10,7 @@ class Camera:
 
         self.height = height    #alto plano imagen 
         self.width  = width     #ancho plano imagen
-
+        self.ratio = width/height #Aspect ratio
         self.f = f              #Distacia plano imagen
         self.l = l              #Distancia plano lejano
         self.c = c              #Distancia plano cercano
@@ -24,9 +25,9 @@ class Camera:
                                      [0,0,0,0],
                                      [0,0,0,0]], dtype=np.float)
 
-        self.matiz_Tp = np.array([[self.f/self.w, 0,0,0]
-                                  [0, self.f/self.h,0,0]
-                                  [0, 0, -(self.l+self.c)/(self.l-self.c), (2*self.l*self.c)/(self.l-self.c)]
+        self.matriz_Tp = np.array([[self.f/self.width, 0,0,0],
+                                  [0, self.f/self.height,0,0],
+                                  [0, 0, -(self.l+self.c)/(self.l-self.c), (2*self.l*self.c)/(self.l-self.c)],
                                   [0,0,1,0]])
 
     def obtener_W(self, punto):
@@ -70,4 +71,15 @@ class Camera:
 
         return punto_respecto_camara
     
-    def
+    def get_coordenadas_plano_cercano(self, punto_respecto_camara):
+        coordenadas_plano_cercano = np.matmul(self.matriz_Tp, punto_respecto_camara)
+        coordenadas_plano_cercano = coordenadas_plano_cercano/coordenadas_plano_cercano[3]
+        print()
+        print("coordenadas_plano_cercano:")
+        print(coordenadas_plano_cercano)
+        return coordenadas_plano_cercano
+
+    def get_coordenadas_pantalla(self, punto_plano_cercano):
+        x = ((self.width - 0)/(2)) * punto_plano_cercano[0] + ((self.width - 0)/(2))*(1)
+        y = ((self.height - 0)/(2 * self.ratio)) * punto_plano_cercano[1] + ((self.height - 0)/(2 * self.ratio))*(self.ratio)
+        return math.ceil(x[0]),math.ceil(y[0])

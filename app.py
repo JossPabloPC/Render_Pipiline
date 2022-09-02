@@ -13,6 +13,12 @@ Right       =  Vector3(1, 0, 0)
 Forward     =  Vector3(0, 0, 1)
 Backward    =  Vector3(0, 0, -1)
 
+width = 800
+ratio = 0.75
+height = width * ratio
+
+arr = np.zeros((width,int(height),3), np.uint8)
+
 #Functions
 def array2Window(arr):
       img = Image.fromarray(arr)
@@ -37,12 +43,26 @@ def _3D_2_2D(camaraPos, pointPos):
       U = Right
       V = Up
 
-      camara = Camera(W, U, V, camaraPos)
+      camara = Camera(W, U, V,camaraPos, width,height,8, 1, 2)
 
       camara.setMatrizcambio()
       camara.setViewMatrix()
 
       punto_camara = camara.get_coordenadas_respecto_camara(pointPos)
+
+      punto_plano_cercano = camara.get_coordenadas_plano_cercano(punto_camara)
+
+      punto_pantalla = camara.get_coordenadas_pantalla(punto_plano_cercano)
+
+      print(punto_pantalla)
+      
+      arr[punto_pantalla] = (255,255,255)
+      img = Image.fromarray(arr)
+      imgtk             = ImageTk.PhotoImage(image = img)
+      output_image      = tk.Label(image=imgtk)
+      output_image.image= imgtk
+      output_image.pack()
+
 
 
 # Create an instance of TKinter Window or frame
