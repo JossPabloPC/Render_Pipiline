@@ -17,7 +17,7 @@ width = 800
 ratio = 0.75
 height = width * ratio
 
-arr = np.zeros((width,int(height),3), np.uint8)
+arr = np.zeros((int(height), width, 3), np.uint8)
 
 #Functions
 def array2Window(arr):
@@ -55,13 +55,18 @@ def _3D_2_2D(camaraPos, pointPos):
       punto_pantalla = camara.get_coordenadas_pantalla(punto_plano_cercano)
 
       print(punto_pantalla)
-      
+
+
       arr[punto_pantalla] = (255,255,255)
+      #cv2.imshow("result", arr)
+      #cv2.waitKey(0)
+      #cv2.destroyAllWindows()
       img = Image.fromarray(arr)
       imgtk             = ImageTk.PhotoImage(image = img)
-      output_image      = tk.Label(image=imgtk)
+      output_image      = tk.Label(image=imgtk, )
       output_image.image= imgtk
       output_image.pack()
+      
 
 
 

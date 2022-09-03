@@ -25,8 +25,8 @@ class Camera:
                                      [0,0,0,0],
                                      [0,0,0,0]], dtype=np.float)
 
-        self.matriz_Tp = np.array([[self.f/self.width, 0,0,0],
-                                  [0, self.f/self.height,0,0],
+        self.matriz_Tp = np.array([[self.f/1, 0,0,0],
+                                  [0, self.f/self.ratio,0,0],
                                   [0, 0, -(self.l+self.c)/(self.l-self.c), (2*self.l*self.c)/(self.l-self.c)],
                                   [0,0,1,0]])
 
@@ -56,7 +56,7 @@ class Camera:
         arr_coordenada = np.array([[self.coordenada.x], [self.coordenada.y], [self.coordenada.z]])
         self.arregloDerecho = np.matmul(self.matrizDeCambio, arr_coordenada)
         
-        self.viewMatrix[0:3,0:3] = self.matrizDeCambio.T
+        self.viewMatrix[0:3,0:3] = self.matrizDeCambio
         self.viewMatrix[0:3,3] = -self.arregloDerecho[:,0]
         self.viewMatrix[3,:] = [0,0,0,1]
         print("---.---.---.---")
