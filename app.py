@@ -43,7 +43,7 @@ def _3D_2_2D(camaraPos, pointPos):
       U = Right
       V = Up
 
-      camara = Camera(W, U, V,camaraPos, width,height,8, 1, 2)
+      camara = Camera(W, U, V,camaraPos, height,width,8, 1, 2)
 
       camara.setMatrizcambio()
       camara.setViewMatrix()
@@ -54,18 +54,10 @@ def _3D_2_2D(camaraPos, pointPos):
 
       punto_pantalla = camara.get_coordenadas_pantalla(punto_plano_cercano)
 
-      print(punto_pantalla)
-
-
+      print(punto_pantalla[1], punto_pantalla[0])
       arr[punto_pantalla] = (255,255,255)
-      #cv2.imshow("result", arr)
-      #cv2.waitKey(0)
-      #cv2.destroyAllWindows()
-      img = Image.fromarray(arr)
-      imgtk             = ImageTk.PhotoImage(image = img)
-      output_image      = tk.Label(image=imgtk, )
-      output_image.image= imgtk
-      output_image.pack()
+      arr[0,0] = (0,255,0)
+      cv2.imshow("Result",arr)
       
 
 
@@ -73,9 +65,6 @@ def _3D_2_2D(camaraPos, pointPos):
 # Create an instance of TKinter Window or frame
 win= tk.Tk()
 win.geometry("850x480")# Create a Label to capture the Video frames
-
-# Output image
-cap= np.zeros((300,300,3), dtype=np.uint8)
 
 #Frames
 coordenadas = tk.Frame()
@@ -93,13 +82,13 @@ Point_X_entry = tk.Entry(master=coordenadas)
 Point_Y_entry = tk.Entry(master=coordenadas)
 Point_Z_entry = tk.Entry(master=coordenadas)
 
-Camera_X_entry.insert(0,"1")
-Camera_Y_entry.insert(0,"2")
-Camera_Z_entry.insert(0,"3")
+Camera_X_entry.insert(0,"0")
+Camera_Y_entry.insert(0,"0")
+Camera_Z_entry.insert(0,"0")
 
 Point_X_entry.insert(0,"0")
-Point_Y_entry.insert(0,"2")
-Point_Z_entry.insert(0,"0")
+Point_Y_entry.insert(0,"0")
+Point_Z_entry.insert(0,"10")
 
 
 #Punto

@@ -28,7 +28,7 @@ class Camera:
         self.matriz_Tp = np.array([[self.f/1, 0,0,0],
                                   [0, self.f/self.ratio,0,0],
                                   [0, 0, -(self.l+self.c)/(self.l-self.c), (2*self.l*self.c)/(self.l-self.c)],
-                                  [0,0,1,0]])
+                                  [0,0,-1,0]])
 
     def obtener_W(self, punto):
         self.W = Vector3.restar_vector(self.coordenada, punto)
@@ -82,4 +82,6 @@ class Camera:
     def get_coordenadas_pantalla(self, punto_plano_cercano):
         x = ((self.width - 0)/(2)) * punto_plano_cercano[0] + ((self.width - 0)/(2))*(1)
         y = ((self.height - 0)/(2 * self.ratio)) * punto_plano_cercano[1] + ((self.height - 0)/(2 * self.ratio))*(self.ratio)
-        return math.ceil(x[0]),math.ceil(y[0])
+        x = self.width  - x[0]
+        y = self.height - y[0]
+        return math.ceil(y),math.ceil(x)
