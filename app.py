@@ -6,6 +6,7 @@ import cv2
 
 from Coordinates import *
 from Camera import Camera
+from Triangle import Triangle
 
 #Constantes
 Up          =  Vector3(0, 1, 0)
@@ -58,7 +59,21 @@ def _3D_2_2D(camaraPos, pointPos):
       arr[punto_pantalla] = (255,255,255)
       arr[0,0] = (0,255,0)
       cv2.imshow("Result",arr)
+      return punto_pantalla[1], punto_pantalla[0], punto_plano_cercano[2][0]
       
+def createTriangle(camaraPos, pointPos1, pointPos2, pointPos3):
+      p1= _3D_2_2D(camaraPos= camaraPos, pointPos= pointPos1)
+      p2= _3D_2_2D(camaraPos= camaraPos, pointPos= pointPos2)
+      p3= _3D_2_2D(camaraPos= camaraPos, pointPos= pointPos3)
+
+      print("")
+      print("P1:", p1, "P2:", p2, "P3:", p3, )
+
+      triangle = Triangle(p1, p2, p3, arr)
+      triangle.trazar_linea(p1, p2, arr)
+      triangle.trazar_linea(p2, p3, arr)
+      triangle.trazar_linea(p3, p1, arr)
+      cv2.imshow("Result",arr)
 
 
 
@@ -72,40 +87,78 @@ coordenadas = tk.Frame()
 #--WIDGETS--
 greeting    = tk.Label(text="Welcome to Python Render Pipeline", fg="white", bg="black",width=50, height=3)
 cameraLbl   = tk.Label(text="Camera coordinates", master=coordenadas)
-pointLbl    = tk.Label(text="Point coordinates", master=coordenadas)
+point_1_Lbl    = tk.Label(text="Point 1 coordinates", master=coordenadas)
+point_2_Lbl    = tk.Label(text="Point 2 coordinates", master=coordenadas)
+point_3_Lbl    = tk.Label(text="Point 3 coordinates", master=coordenadas)
 #Camara
 Camera_X_entry = tk.Entry(master=coordenadas)
 Camera_Y_entry = tk.Entry(master=coordenadas)
 Camera_Z_entry = tk.Entry(master=coordenadas)
 
-Point_X_entry = tk.Entry(master=coordenadas)
-Point_Y_entry = tk.Entry(master=coordenadas)
-Point_Z_entry = tk.Entry(master=coordenadas)
+Point_1_X_entry = tk.Entry(master=coordenadas)
+Point_1_Y_entry = tk.Entry(master=coordenadas)
+Point_1_Z_entry = tk.Entry(master=coordenadas)
+
+Point_2_X_entry = tk.Entry(master=coordenadas)
+Point_2_Y_entry = tk.Entry(master=coordenadas)
+Point_2_Z_entry = tk.Entry(master=coordenadas)
+
+Point_3_X_entry = tk.Entry(master=coordenadas)
+Point_3_Y_entry = tk.Entry(master=coordenadas)
+Point_3_Z_entry = tk.Entry(master=coordenadas)
+
 
 Camera_X_entry.insert(0,"0")
 Camera_Y_entry.insert(0,"0")
 Camera_Z_entry.insert(0,"0")
 
-Point_X_entry.insert(0,"0")
-Point_Y_entry.insert(0,"0")
-Point_Z_entry.insert(0,"10")
+Point_1_X_entry.insert(0,"0")
+Point_1_Y_entry.insert(0,"0")
+Point_1_Z_entry.insert(0,"10")
+
+
+Point_2_X_entry.insert(0,"0")
+Point_2_Y_entry.insert(0,"4")
+Point_2_Z_entry.insert(0,"10")
+
+
+Point_3_X_entry.insert(0,"5")
+Point_3_Y_entry.insert(0,"0")
+Point_3_Z_entry.insert(0,"10")
 
 
 #Punto
-run_btn     = tk.Button(command=lambda: _3D_2_2D(Vector3(int(Camera_X_entry.get()), int(Camera_Y_entry.get()), int(Camera_Z_entry.get())),
-                                                Vector3(float(Point_X_entry.get()), float(Point_Y_entry.get()), float(Point_Z_entry.get()))
+run_btn     = tk.Button(command=lambda: createTriangle(Vector3(int(Camera_X_entry.get()), int(Camera_Y_entry.get()), int(Camera_Z_entry.get())),
+                                                Vector3(float(Point_1_X_entry.get()), float(Point_1_Y_entry.get()), float(Point_1_Z_entry.get())),
+                                                Vector3(float(Point_2_X_entry.get()), float(Point_2_Y_entry.get()), float(Point_2_Z_entry.get())),
+                                                Vector3(float(Point_3_X_entry.get()), float(Point_3_Y_entry.get()), float(Point_3_Z_entry.get())),
                                                 ) , text= "Run")
 #Packing
 greeting.pack()
 cameraLbl.pack()
+
 Camera_X_entry.pack()
 Camera_Y_entry.pack()
 Camera_Z_entry.pack()
-pointLbl.pack()
-Point_X_entry.pack()
-Point_Y_entry.pack()
-Point_Z_entry.pack()
+
+point_1_Lbl.pack()
+
+Point_1_X_entry.pack()
+Point_1_Y_entry.pack()
+Point_1_Z_entry.pack()
+
+point_2_Lbl.pack()
+Point_2_X_entry.pack()
+Point_2_Y_entry.pack()
+Point_2_Z_entry.pack()
+
+point_3_Lbl.pack()
+Point_3_X_entry.pack()
+Point_3_Y_entry.pack()
+Point_3_Z_entry.pack()
+
 coordenadas.pack()
+
 run_btn.pack()
 
 win.mainloop()
